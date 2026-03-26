@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Momentz | Growth & Venture Architecture</title>
+<meta name="description" content="Frequently asked questions about Momentz — a European growth and venture architecture firm. Learn about our model, services, and how we partner with companies.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://momentz.team/faq">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="FAQ — Momentz">
+<meta property="og:description" content="Common questions about how Momentz works, who we partner with, and what makes us different.">
+<meta property="og:url" content="https://momentz.team/faq">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f4f0;
+    --gray-100: #e8e7e3;
+    --gray-200: #d1d0cc;
+    --gray-400: #8a8985;
+    --gray-600: #5a5955;
+    --gray-800: #2a2925;
+    --accent: #b8a080;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+
+  html { font-size: 16px; background: var(--black); overflow-x: hidden; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--white);
+    background: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    z-index: 100;
+    padding: 28px 0;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--gray-800);
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo { display: flex; align-items: center; }
+
+  .logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--white);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+  .mobile-nav-btn {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    z-index: 201;
+    position: relative;
+  }
+
+  .mobile-nav-btn span {
+    display: block;
+    width: 24px; height: 1.5px;
+    background: var(--white);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+
+  .mobile-nav-btn.active span:first-child { transform: rotate(45deg) translate(2.5px, 2.5px); }
+  .mobile-nav-btn.active span:last-child { transform: rotate(-45deg) translate(2.5px, -2.5px); }
+
+  nav.nav-open { z-index: 202; }
+
+  /* ===== MOBILE NAV OVERLAY ===== */
+  .mobile-nav-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--black);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+
+  .mobile-nav-overlay ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-nav-overlay li { overflow: hidden; }
+
+  .mobile-nav-overlay a {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 400;
+    color: var(--white);
+    display: block;
+    padding: 12px 0;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-overlay.active a { transform: translateY(0); opacity: 1; }
+  .mobile-nav-overlay li:nth-child(1) a { transition-delay: 0.1s; }
+  .mobile-nav-overlay li:nth-child(2) a { transition-delay: 0.15s; }
+  .mobile-nav-overlay li:nth-child(3) a { transition-delay: 0.2s; }
+  .mobile-nav-overlay li:nth-child(4) a { transition-delay: 0.25s; }
+  .mobile-nav-overlay li:nth-child(5) a { transition-delay: 0.3s; }
+  .mobile-nav-overlay li:nth-child(6) a { transition-delay: 0.35s; }
+
+  .mobile-nav-overlay a:hover { color: var(--accent); }
+
+  .mobile-nav-footer {
+    position: absolute;
+    bottom: 48px;
+    text-align: center;
+  }
+
+  .mobile-nav-footer a {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--gray-600);
+    transition: color 0.3s;
+  }
+
+  .mobile-nav-footer a:hover { color: var(--white); }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    padding: 160px 0 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+
+  .page-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .page-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--white);
+  }
+
+  .page-headline em { font-style: italic; color: var(--accent); }
+
+  .page-sub {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.8;
+    max-width: 380px;
+    align-self: end;
+  }
+
+  /* ===== DIVIDER ===== */
+  .section-divider { height: 1px; background: var(--gray-800); margin: 0; border: none; }
+
+  /* ===== FAQ ===== */
+  .faq-outer { padding: 0 0 120px; }
+
+  .faq-item { border-bottom: 1px solid var(--gray-800); }
+  .faq-item:first-child { border-top: none; }
+
+  .faq-trigger {
+    display: grid;
+    grid-template-columns: 48px 1fr 32px;
+    align-items: center;
+    gap: 32px;
+    padding: 36px 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .faq-trigger:hover { opacity: 0.75; }
+
+  .faq-num {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--gray-600);
+  }
+
+  .faq-question {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .faq-icon {
+    width: 28px; height: 28px;
+    border: 1px solid var(--gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.25s, border-color 0.25s;
+    position: relative;
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: '';
+    position: absolute;
+    background: var(--gray-400);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
+  }
+
+  .faq-icon::before { width: 10px; height: 1px; }
+  .faq-icon::after { width: 1px; height: 10px; }
+
+  .faq-item.open .faq-icon { background: var(--accent); border-color: var(--accent); }
+  .faq-item.open .faq-icon::before,
+  .faq-item.open .faq-icon::after { background: var(--black); }
+  .faq-item.open .faq-icon::after { transform: rotate(90deg); opacity: 0; }
+
+  .faq-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .faq-item.open .faq-body { grid-template-rows: 1fr; }
+
+  .faq-body-inner { overflow: hidden; }
+
+  .faq-answer {
+    padding: 0 0 40px 80px;
+    max-width: 680px;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.9;
+  }
+
+  .faq-answer p + p { margin-top: 16px; }
+  .faq-answer strong { color: var(--white); font-weight: 500; }
+  .faq-answer em { font-style: italic; color: var(--accent); }
+
+  /* ===== CTA STRIP ===== */
+  .cta-strip {
+    padding: 100px 0 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .cta-strip-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .cta-strip-headline {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+  }
+
+  .cta-strip-headline em { font-style: italic; color: var(--accent); }
+
+  .btn-primary {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    padding: 20px 48px;
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover { background: var(--accent); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 1px solid var(--gray-800);
+    padding: 40px 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left { font-size: 0.75rem; color: var(--gray-600); }
+  .footer-right { display: flex; gap: 24px; }
+
+  .footer-right a {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+
+  .footer-right a:hover { color: var(--white); }
+
+  /* ===== NOISE ===== */
+  .noise {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .fade-up:nth-child(1) { animation-delay: 0.1s; }
+  .fade-up:nth-child(2) { animation-delay: 0.15s; }
+  .fade-up:nth-child(3) { animation-delay: 0.2s; }
+  .fade-up:nth-child(4) { animation-delay: 0.25s; }
+  .fade-up:nth-child(5) { animation-delay: 0.3s; }
+
+  /* ===== RESPONSIVE ===== */
+  .nav-links a { color: var(--gray-400); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .mobile-nav-btn { display: flex; }
+    .page-header { grid-template-columns: 1fr; gap: 24px; padding: 140px 0 60px; }
+    .faq-trigger { grid-template-columns: 36px 1fr 28px; gap: 16px; padding: 28px 0; }
+    .faq-answer { padding: 0 0 32px 52px; }
+    .cta-strip { flex-direction: column; align-items: flex-start; padding: 64px 0 80px; }
+    .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+  }
+
+  @media (min-width: 769px) {
+    .mobile-nav-btn { display: none; }
+    .mobile-nav-overlay { display: none; }
+    .logo-img { height: 48px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="data:image/png;base64,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" alt="Momentz" class="logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="index.html#pillars">Services</a></li>
+      <li><a href="index.html#diff">Model</a></li>
+      <li><a href="index.html#ventures">Ventures</a></li>
+      <li><a href="momentz-faq.html" class="active">FAQ</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="mobile-nav-btn" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobileNav">
+  <ul>
+    <li><a href="index.html#pillars" class="mobile-nav-link">Services</a></li>
+    <li><a href="index.html#diff" class="mobile-nav-link">Model</a></li>
+    <li><a href="index.html#ventures" class="mobile-nav-link">Ventures</a></li>
+    <li><a href="momentz-faq.html" class="mobile-nav-link">FAQ</a></li>
+    <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-footer">
+    <a href="mailto:fabio@momentz.team">fabio@momentz.team</a>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="container">
+  <div class="page-header">
+    <div>
+      <p class="page-tag" style="opacity:0; animation: fadeUp 0.7s ease forwards 0.3s;">Questions & answers</p>
+      <h1 class="page-headline" style="opacity:0; animation: fadeUp 0.9s ease forwards 0.5s;">Every<br>question<br><em>answered.</em></h1>
+    </div>
+    <p class="page-sub" style="opacity:0; animation: fadeUp 0.9s ease forwards 0.7s;">The most common questions we hear from founders, scale-ups, and companies considering working with us. Direct answers. No ambiguity.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- FAQ LIST -->
+  <div class="faq-outer">
+
+    <div class="faq-item fade-up">
+      <div class="faq-trigger" role="button" tabindex="0" aria-expanded="false">
+        <span class="faq-num">01</span>
+        <h2 class="faq-question">What exactly does Momentz do — and how is it different from a consultancy?</h2>
+        <div class="faq-icon" aria-hidden="true"></div>
+      </div>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <div class="faq-answer">
+            <p>Consultancies deliver a strategy and leave. We don't. Momentz operates as a <strong>hybrid between a strategy firm, an operator, and a co-investor</strong> — depending on what the situation requires.</p>
+            <p>In practice, this means we don't hand over a slide deck and wish you luck. We enter a company's operations, build the frameworks, activate the partnerships, and stay in the room until the results are real. We have skin in the game — structurally, not just rhetorically.</p>
+            <p>The short version: <em>we build what others only advise.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item fade-up">
+      <div class="faq-trigger" role="button" tabindex="0" aria-expanded="false">
+        <span class="faq-num">02</span>
+        <h2 class="faq-question">What kind of companies do you typically work with?</h2>
+        <div class="faq-icon" aria-hidden="true"></div>
+      </div>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <div class="faq-answer">
+            <p>We work with three types of partners — and we're deliberate about each one.</p>
+            <p><strong>Scale-ups and mid-size companies</strong> that have proven their model locally and are ready to expand internationally. <strong>Global companies</strong> seeking structured, intelligent entry into European markets. And <strong>early-stage founders</strong> building category-defining ventures who need more than capital — they need architecture.</p>
+            <p>What they share: a high bar for execution, clarity on their ambition, and the seriousness to match it. We don't work with companies that want to explore. We work with companies that are ready to move.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item fade-up">
+      <div class="faq-trigger" role="button" tabindex="0" aria-expanded="false">
+        <span class="faq-num">03</span>
+        <h2 class="faq-question">Do you invest capital, or is this purely a services engagement?</h2>
+        <div class="faq-icon" aria-hidden="true"></div>
+      </div>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <div class="faq-answer">
+            <p>Both — depending on the context and the opportunity. Through our <strong>Venture Catalyst</strong> pillar, we selectively co-invest in the ventures we help build and structure. This isn't a fund with a mandate to deploy capital broadly. It's strategic, case-by-case allocation reserved for situations where our involvement goes deep from day one.</p>
+            <p>For expansion and growth engagements, the model is primarily operational and strategic. In some cases, this evolves into a co-ownership or equity arrangement where it makes sense for both sides.</p>
+            <p>If you're a founder looking for pure financial investment with no operational involvement, we're probably not the right partner. If you want someone who builds alongside you and brings capital as part of that commitment, <em>we should talk.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item fade-up">
+      <div class="faq-trigger" role="button" tabindex="0" aria-expanded="false">
+        <span class="faq-num">04</span>
+        <h2 class="faq-question">How does an engagement with Momentz typically begin?</h2>
+        <div class="faq-icon" aria-hidden="true"></div>
+      </div>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <div class="faq-answer">
+            <p>It starts with a conversation — not a pitch process. We want to understand where you are, where you're going, and whether there's a genuine fit before either side commits anything.</p>
+            <p>From there, if the alignment is clear, we move into a <strong>structured diagnostic phase</strong>: mapping your current position, identifying the key growth levers, and defining a precise scope of work. This isn't a lengthy consulting intake — it's fast, direct, and designed to get to a clear decision quickly.</p>
+            <p>We engage with a limited number of companies at any given time. That's intentional. It means every partner gets our full attention — not a managed relationship with a junior team running the work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item fade-up">
+      <div class="faq-trigger" role="button" tabindex="0" aria-expanded="false">
+        <span class="faq-num">05</span>
+        <h2 class="faq-question">Where is Momentz focused geographically?</h2>
+        <div class="faq-icon" aria-hidden="true"></div>
+      </div>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <div class="faq-answer">
+            <p>Our base is Milan, and our primary operational network covers <strong>Western and Southern Europe</strong> — with particular depth in Italy, France, Spain, and the DACH region. For companies entering Europe, we provide the local intelligence, relationships, and operational presence that make the difference between a genuine market entry and a checkbox exercise.</p>
+            <p>For European companies looking to expand beyond the continent, we work across markets globally — structuring the architecture and activating the right partnerships regardless of geography.</p>
+            <p>We're not trying to be everywhere. We're trying to be <em>exactly right</em> for the markets and moments that matter to our partners.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- CTA STRIP -->
+  <div class="cta-strip">
+    <div>
+      <p class="cta-strip-tag">Still have questions?</p>
+      <h2 class="cta-strip-headline">The best answers<br>come from a <em>real conversation.</em></h2>
+    </div>
+    <a href="index.html#contact" class="btn-primary">Get in touch →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">© 2026 Momentz. All rights reserved.</div>
+      <div class="footer-right">
+        <a href="#">LinkedIn</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // FAQ accordion
+  var items = document.querySelectorAll('.faq-item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.faq-trigger');
+    trigger.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      items.forEach(function(i){ i.classList.remove('open'); i.querySelector('.faq-trigger').setAttribute('aria-expanded','false'); });
+      if(!isOpen){ item.classList.add('open'); trigger.setAttribute('aria-expanded','true'); }
+    });
+    trigger.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); trigger.click(); }
+    });
+  });
+
+  // Mobile nav toggle
+  var mobileBtn = document.querySelector('.mobile-nav-btn');
+  var mobileNav = document.getElementById('mobileNav');
+  var mainNav = document.getElementById('mainNav');
+
+  mobileBtn.addEventListener('click', function(){
+    mobileBtn.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+    mainNav.classList.toggle('nav-open');
+    document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momentz — Growth & Venture Architecture Firm | Scale Across Markets</title>
+<meta name="description" content="Momentz is a European growth and venture architecture firm. We help companies scale internationally, execute go-to-market strategies, and co-build high-potential ventures from the ground up.">
+<meta name="keywords" content="growth architecture, venture studio, international expansion, market entry strategy, go-to-market, venture building, scale-up, Europe">
+<meta name="author" content="Momentz">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://momentz.team">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Momentz — Growth & Venture Architecture Firm">
+<meta property="og:description" content="We help companies scale internationally, execute growth strategies, and co-build high-potential ventures. Strategy + execution + investment under one roof.">
+<meta property="og:url" content="https://momentz.team">
+<meta property="og:site_name" content="Momentz">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Momentz — Growth & Venture Architecture Firm">
+<meta name="twitter:description" content="We help companies scale internationally, execute growth strategies, and co-build high-potential ventures.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f4f0;
+    --gray-100: #e8e7e3;
+    --gray-200: #d1d0cc;
+    --gray-400: #8a8985;
+    --gray-600: #5a5955;
+    --gray-800: #2a2925;
+    --accent: #b8a080;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: auto;
+    background: var(--black);
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--white);
+    background: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 28px 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    mix-blend-mode: difference;
+  }
+
+  nav.scrolled { padding: 18px 0; }
+
+  nav.nav-open {
+    z-index: 202;
+    mix-blend-mode: normal;
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    position: relative;
+    transition: opacity 0.3s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--white);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover { opacity: 0.8; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-top: 100px;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .hero-label span { display: inline-block; }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 6.5rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    max-width: 900px;
+    margin-bottom: 48px;
+  }
+
+  .hero-title .line { display: block; overflow: hidden; }
+  .hero-title .line-inner { display: block; transform: translateY(110%); }
+  .hero-title em { font-style: italic; color: var(--accent); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--gray-400);
+    max-width: 520px;
+    margin-bottom: 56px;
+    overflow: hidden;
+  }
+
+  .hero-sub span { display: inline-block; }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--gray-600);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .hero-cta:hover { border-color: var(--white); gap: 24px; }
+  .hero-cta .arrow { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .hero-cta:hover .arrow { transform: translateX(6px); }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 80px;
+    right: clamp(24px, 5vw, 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+  }
+
+  .scroll-indicator span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: var(--gray-800);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0% { top: -100%; }
+    50% { top: 100%; }
+    100% { top: 100%; }
+  }
+
+  /* ===== MANIFESTO ===== */
+  .manifesto { padding: 200px 0; position: relative; }
+
+  .manifesto-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--gray-800);
+    max-width: 860px;
+  }
+
+  .manifesto-text .word { display: inline-block; transition: color 0.3s; }
+  .manifesto-text .word.active { color: var(--white); }
+
+  /* ===== DIVIDER ===== */
+  .section-divider { height: 1px; background: var(--gray-800); margin: 0; }
+
+  /* ===== PILLARS ===== */
+  .pillars { padding: 160px 0; }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 100px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    max-width: 380px;
+    line-height: 1.7;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .pillar-card {
+    background: linear-gradient(160deg, rgba(42,41,37,0.6) 0%, rgba(10,10,10,1) 100%);
+    padding: clamp(36px, 4vw, 56px);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .pillar-card:hover::before { opacity: 1; }
+  .pillar-card:hover { background: linear-gradient(160deg, rgba(42,41,37,0.8) 0%, rgba(15,15,12,1) 100%); }
+
+  .pillar-number {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 400;
+    color: var(--gray-800);
+    line-height: 1;
+    margin-bottom: 40px;
+    transition: color 0.5s;
+  }
+
+  .pillar-card:hover .pillar-number { color: var(--accent); }
+
+  .pillar-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+
+  .pillar-desc {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .pillar-capabilities { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+  .pillar-capabilities li {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--gray-600);
+    letter-spacing: 0.04em;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .pillar-capabilities li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 6px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* ===== DIFFERENTIATOR ===== */
+  .differentiator {
+    padding: 160px 0;
+    background: linear-gradient(180deg, var(--black) 0%, #0d0d0b 50%, var(--black) 100%);
+  }
+
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .diff-statement {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 40px;
+  }
+
+  .diff-statement em { font-style: italic; color: var(--accent); }
+
+  .diff-body {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.8;
+  }
+
+  .diff-table { width: 100%; border-collapse: collapse; }
+
+  .diff-table th {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    text-align: left;
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid var(--gray-800);
+  }
+
+  .diff-table td {
+    padding: 20px 16px 20px 0;
+    border-bottom: 1px solid rgba(42,41,37,0.4);
+    font-size: 0.88rem;
+    color: var(--gray-400);
+    vertical-align: top;
+  }
+
+  .diff-table td:first-child { font-weight: 500; color: var(--white); width: 30%; }
+  .diff-table td:last-child { color: var(--accent); font-weight: 400; }
+
+  /* ===== ABOUT ===== */
+  .about { padding: 160px 0; }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+
+  .about-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--accent);
+    padding-left: 32px;
+    border-left: 1px solid var(--gray-800);
+    margin-bottom: 48px;
+  }
+
+  .about-text {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.9;
+    margin-bottom: 20px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .stat-item { padding-top: 20px; border-top: 1px solid var(--gray-800); }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--gray-600);
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== VENTURES ===== */
+  .ventures { padding: 160px 0; background: #0d0d0b; }
+  .ventures-list { margin-top: 80px; }
+
+  .venture-item {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--gray-800);
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+
+  .venture-item:first-child { border-top: 1px solid var(--gray-800); }
+  .venture-item:hover { padding-left: 16px; }
+
+  .venture-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--white);
+    transition: color 0.3s;
+  }
+
+  .venture-item:hover .venture-name { color: var(--accent); }
+
+  .venture-desc {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.6;
+  }
+
+  .venture-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    padding: 8px 16px;
+    border: 1px solid var(--gray-800);
+    white-space: nowrap;
+    transition: all 0.3s;
+  }
+
+  .venture-item:hover .venture-tag { border-color: var(--accent); color: var(--accent); }
+
+  .venture-subs { display: flex; flex-direction: column; gap: 12px; }
+
+  .venture-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.6;
+  }
+
+  .sub-name {
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  /* ===== CONTACT ===== */
+  .contact { padding: 200px 0 160px; text-align: center; }
+  .contact .section-label { margin-bottom: 40px; }
+
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+    max-width: 700px;
+    margin: 0 auto 24px;
+  }
+
+  .contact-title em { font-style: italic; color: var(--accent); }
+
+  .contact-sub {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    margin-bottom: 56px;
+    line-height: 1.7;
+  }
+
+  .contact-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    padding: 20px 48px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-cta:hover { background: var(--accent); color: var(--black); gap: 24px; }
+
+  .contact-email { margin-top: 48px; font-size: 0.85rem; color: var(--gray-600); }
+
+  .contact-email a {
+    color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-800);
+    padding-bottom: 2px;
+    transition: all 0.3s;
+  }
+
+  .contact-email a:hover { color: var(--white); border-color: var(--white); }
+
+  /* ===== FOOTER ===== */
+  footer { padding: 40px 0; border-top: 1px solid var(--gray-800); }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left { font-size: 0.75rem; color: var(--gray-600); }
+  .footer-right { display: flex; gap: 24px; }
+
+  .footer-right a {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+
+  .footer-right a:hover { color: var(--white); }
+
+  /* ===== NOISE OVERLAY ===== */
+  .noise {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* ===== CURSOR GLOW ===== */
+  .cursor-glow {
+    position: fixed;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,160,128,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+  }
+
+  /* ===== SCREEN READER ONLY (GEO content) ===== */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ===== FAQ SECTION ===== */
+  .faq { padding: 80px 0; }
+
+  .faq-list { max-width: 800px; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--gray-800);
+  }
+
+  .faq-item:first-child { border-top: 1px solid var(--gray-800); }
+
+  .faq-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: color 0.3s;
+  }
+
+  .faq-question:hover { color: var(--accent); }
+
+  .faq-icon {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--gray-600);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    margin-left: 24px;
+  }
+
+  .faq-item.active .faq-icon {
+    transform: rotate(45deg);
+    color: var(--accent);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s;
+    padding: 0 0;
+  }
+
+  .faq-item.active .faq-answer {
+    max-height: 300px;
+    padding: 0 0 24px 0;
+  }
+
+  .faq-answer p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.8;
+    max-width: 680px;
+  }
+
+  /* ===== REVEAL ===== */
+  .reveal { opacity: 0; transform: translateY(40px); }
+
+  /* ===== MOBILE NAV BUTTON ===== */
+  .mobile-nav-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    z-index: 201;
+    position: relative;
+  }
+
+  .mobile-nav-btn span {
+    display: block;
+    width: 24px; height: 1.5px;
+    background: var(--white);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+
+  /* Hamburger → X animation */
+  .mobile-nav-btn.active span:first-child {
+    transform: rotate(45deg) translate(2.5px, 2.5px);
+  }
+
+  .mobile-nav-btn.active span:last-child {
+    transform: rotate(-45deg) translate(2.5px, -2.5px);
+  }
+
+  /* ===== MOBILE NAV OVERLAY ===== */
+  .mobile-nav-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--black);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .mobile-nav-overlay ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-nav-overlay li {
+    overflow: hidden;
+  }
+
+  .mobile-nav-overlay a {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 400;
+    color: var(--white);
+    display: block;
+    padding: 12px 0;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .mobile-nav-overlay.active a {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-nav-overlay li:nth-child(1) a { transition-delay: 0.1s; }
+  .mobile-nav-overlay li:nth-child(2) a { transition-delay: 0.15s; }
+  .mobile-nav-overlay li:nth-child(3) a { transition-delay: 0.2s; }
+  .mobile-nav-overlay li:nth-child(4) a { transition-delay: 0.25s; }
+  .mobile-nav-overlay li:nth-child(5) a { transition-delay: 0.3s; }
+
+  .mobile-nav-overlay a::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: translateX(-50%);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-overlay a:hover::after { width: 60%; }
+  .mobile-nav-overlay a:hover { color: var(--accent); }
+
+  .mobile-nav-footer {
+    position: absolute;
+    bottom: 48px;
+    text-align: center;
+  }
+
+  .mobile-nav-footer a {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--gray-600);
+    letter-spacing: 0.06em;
+    transition: color 0.3s;
+  }
+
+  .mobile-nav-footer a:hover { color: var(--white); }
+
+  /* ==========================================================
+     MOBILE-FIRST BASE (default = mobile, 390px+)
+     All base styles above are already mobile-friendly.
+     Below we override ONLY what needs to change per breakpoint.
+     ========================================================== */
+
+  /* Mobile base: hide desktop nav, stack grids */
+  .nav-links { display: none; }
+  .scroll-indicator { display: none; }
+
+  .hero { min-height: 85vh; padding-top: 80px; }
+
+  .section-header { flex-direction: column; align-items: flex-start; }
+
+  .manifesto { padding: 100px 0; }
+  .pillars, .differentiator, .about, .ventures { padding: 80px 0; }
+  .contact { padding: 100px 0 80px; }
+
+  .pillars-grid { grid-template-columns: 1fr; gap: 2px; }
+  .pillar-card { min-height: auto; padding: 32px; }
+
+  .diff-grid { grid-template-columns: 1fr; gap: 40px; }
+
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .venture-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 28px 0;
+  }
+  .venture-tag { justify-self: start; }
+
+  .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+
+  .contact-cta { padding: 18px 36px; font-size: 0.8rem; }
+
+  .logo-img { height: 40px; }
+
+  /* ===== TABLET (768px+) ===== */
+  @media (min-width: 768px) {
+    .mobile-nav-btn { display: none; }
+    .mobile-nav-overlay { display: none; }
+    .nav-links { display: flex; }
+    .scroll-indicator { display: flex; }
+
+    .hero { min-height: 100vh; padding-top: 100px; }
+
+    .manifesto { padding: 160px 0; }
+    .pillars, .differentiator, .about, .ventures, .faq { padding: 120px 0; }
+    .contact { padding: 160px 0 120px; }
+
+    .section-header { flex-direction: row; align-items: flex-end; }
+
+    .diff-grid { grid-template-columns: 1fr 1fr; gap: 60px; }
+    .about-grid { grid-template-columns: 1fr 1fr; gap: 60px; }
+
+    .venture-item {
+      grid-template-columns: 180px 1fr auto;
+      gap: 32px;
+      padding: 36px 0;
+    }
+
+    .about-stats { grid-template-columns: 1fr 1fr; gap: 32px; }
+
+    .pillar-card { padding: clamp(36px, 4vw, 56px); }
+
+    .footer-inner { flex-direction: row; }
+
+    .contact-cta { padding: 20px 48px; font-size: 0.85rem; }
+
+    .logo-img { height: 48px; }
+  }
+
+  /* ===== DESKTOP (1024px+) ===== */
+  @media (min-width: 1024px) {
+    .pillars-grid { grid-template-columns: repeat(3, 1fr); }
+    .pillar-card { min-height: 420px; }
+
+    .diff-grid { gap: 80px; }
+    .about-grid { gap: 80px; }
+
+    .venture-item {
+      grid-template-columns: 200px 1fr auto;
+      gap: 40px;
+      padding: 40px 0;
+    }
+
+    .about-stats { gap: 40px; }
+
+    .manifesto { padding: 200px 0; }
+    .pillars, .differentiator, .about, .ventures { padding: 160px 0; }
+    .contact { padding: 200px 0 160px; }
+  }
+
+  /* ===== LARGE DESKTOP (1440px+) ===== */
+  @media (min-width: 1440px) {
+    .container { max-width: 1400px; }
+  }
+</style>
+
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Momentz",
+  "url": "https://momentz.team",
+  "email": "fabio@momentz.team",
+  "description": "Momentz is a European growth and venture architecture firm that helps companies scale internationally, executes go-to-market strategies, and co-builds high-potential ventures. Founded in Milan, Momentz combines strategy, execution, and selective investment under one hybrid operator model.",
+  "foundingLocation": {
+    "@type": "Place",
+    "name": "Milan, Italy"
+  },
+  "areaServed": "Europe",
+  "knowsAbout": ["international expansion", "market entry strategy", "venture building", "growth execution", "go-to-market strategy"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Momentz Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Expansion Architecture",
+          "description": "Structured market entry for local companies going international and global companies entering new markets. Includes market entry strategy, go-to-market design, local partnerships and setup, and revenue acceleration frameworks."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Growth Execution",
+          "description": "Operational infrastructure that turns strategy into performance. Includes operational structuring, commercial scaling, performance frameworks, and process optimization."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Venture Catalyst",
+          "description": "Co-building ventures from ideation to market with skin in the game. Includes venture ideation and validation, business model structuring, fundraising strategy, and selective capital allocation."
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<!-- FAQ Schema for GEO + SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Momentz?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Momentz is a European growth and venture architecture firm based in Milan. It helps companies scale internationally, executes go-to-market strategies, and co-builds high-potential ventures. Unlike traditional consultants, agencies, or VCs, Momentz combines strategy, execution, and selective investment under one hybrid operator model."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What services does Momentz offer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Momentz offers three core services: (1) Expansion Architecture — structured market entry for companies going international, including go-to-market design and local partnerships; (2) Growth Execution — operational structuring, commercial scaling, and performance frameworks; (3) Venture Catalyst — co-building ventures from ideation to market, including business model structuring, fundraising strategy, and selective capital allocation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Momentz different from a consulting firm or VC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Momentz is a hybrid operator model. Unlike consultants who only advise on strategy, Momentz executes. Unlike agencies that are purely tactical, Momentz is strategic and operational. Unlike VCs that only provide capital, Momentz builds, structures, and invests. The core idea: Momentz builds from within rather than advising from the outside."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What ventures has Momentz built?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Momentz's venture portfolio includes Korus, an AI-powered content platform for premium publishers, creators and influencers bringing the precision of media advertising to the creator economy; and B2C Apps including Renovation Studio (premium renovation management) and Lens.Design (an AI layer turning visual inspiration into actionable discovery for architecture and design)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is Momentz based?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Momentz is based in Milan, Italy, with a European operating geography and global expansion capabilities. The firm helps local European companies scale internationally and helps global companies enter new markets."
+      }
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+<div class="noise"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="logo"><img src="data:image/png;base64,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" alt="Momentz" class="logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="#manifesto">Manifesto</a></li>
+      <li><a href="#pillars">Services</a></li>
+      <li><a href="#diff">Model</a></li>
+      <li><a href="#ventures">Ventures</a></li>
+      <li><a href="momentz-faq.html">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="mobile-nav-btn" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobileNav">
+  <ul>
+    <li><a href="#manifesto" class="mobile-nav-link">Manifesto</a></li>
+    <li><a href="#pillars" class="mobile-nav-link">Services</a></li>
+    <li><a href="#ventures" class="mobile-nav-link">Ventures</a></li>
+    <li><a href="momentz-faq.html">FAQ</a></li>
+    <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-footer">
+    <a href="mailto:fabio@momentz.team">fabio@momentz.team</a>
+  </div>
+</div>
+
+<!-- SEO/GEO: Visually hidden but crawlable entity definition -->
+<div class="sr-only" role="complementary" aria-label="About Momentz">
+  <h2>What is Momentz?</h2>
+  <p>Momentz is a European growth and venture architecture firm based in Milan, Italy. Founded to bridge the gap between strategy and execution, Momentz helps local companies expand internationally and global companies enter new markets. The firm operates as a hybrid operator model — combining strategy, execution, and selective investment under one roof. Unlike traditional consulting firms that only advise, or VCs that only fund, Momentz builds from within: structuring operations, scaling revenue, and co-creating ventures alongside founders.</p>
+  <h2>What does Momentz do?</h2>
+  <p>Momentz operates across three core pillars: (1) Expansion Architecture — structured market entry including go-to-market design, local partnerships, and revenue acceleration; (2) Growth Execution — operational structuring, commercial scaling, and performance optimization; (3) Venture Catalyst — co-building ventures from ideation to market, including business model structuring, fundraising strategy, and selective capital allocation.</p>
+  <h2>Momentz venture portfolio</h2>
+  <p>Korus is an AI-powered content platform for premium publishers, creators and influencers, bringing the precision of media advertising to the creator economy. Renovation Studio provides premium renovation management for discerning homeowners. Lens.Design turns visual inspiration into actionable discovery — an AI layer for architecture and design.</p>
+</div>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="container hero-content">
+    <div class="hero-label">
+      <span>Growth & Venture Architecture</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="line"><span class="line-inner">Growth happens</span></span>
+      <span class="line"><span class="line-inner">in decisive</span></span>
+      <span class="line"><span class="line-inner"><em>moments.</em></span></span>
+    </h1>
+    <p class="hero-sub">
+      <span>We identify, structure, and activate the moments that turn ambition into scalable international growth.</span>
+    </p>
+    <a href="#contact" class="hero-cta">
+      <span>Start a conversation</span>
+      <svg class="arrow" width="20" height="12" viewBox="0 0 20 12" fill="none">
+        <path d="M14 1L19 6M19 6L14 11M19 6H0" stroke="currentColor" stroke-width="1"/>
+      </svg>
+    </a>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="container">
+    <p class="manifesto-text" id="manifestoText">
+      Growth is not linear. It doesn't follow plans. It happens in moments. Moments of clarity. Moments of decision. Moments of execution. Most companies miss them. We don't. Momentz exists to identify, structure, and activate those moments — turning ambition into scalable growth. Because those who recognise the right moment don't just grow. They lead.
+    </p>
+  </div>
+</section>
+
+<div class="container"><hr class="section-divider"></div>
+
+<!-- PILLARS -->
+<section class="pillars" id="pillars">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <p class="section-label reveal">What we do</p>
+        <h2 class="section-title reveal">Three pillars.<br>One architecture.</h2>
+      </div>
+      <p class="section-desc reveal">We don't advise from the outside. We build from within — combining strategy, execution, and capital under one roof.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card reveal">
+        <div>
+          <div class="pillar-number">01</div>
+          <h3 class="pillar-name">Expansion Architecture</h3>
+          <p class="pillar-desc">Structured market entry for local companies going international — and global companies entering new markets.</p>
+        </div>
+        <ul class="pillar-capabilities">
+          <li>Market entry strategy</li>
+          <li>Go-to-market design</li>
+          <li>Local partnerships & setup</li>
+          <li>Revenue acceleration frameworks</li>
+        </ul>
+      </div>
+      <div class="pillar-card reveal">
+        <div>
+          <div class="pillar-number">02</div>
+          <h3 class="pillar-name">Growth Execution</h3>
+          <p class="pillar-desc">Operational infrastructure that turns strategy into performance — structuring the engine, not just the idea.</p>
+        </div>
+        <ul class="pillar-capabilities">
+          <li>Operational structuring</li>
+          <li>Commercial scaling</li>
+          <li>Performance frameworks</li>
+          <li>Process optimization</li>
+        </ul>
+      </div>
+      <div class="pillar-card reveal">
+        <div>
+          <div class="pillar-number">03</div>
+          <h3 class="pillar-name">Venture Catalyst</h3>
+          <p class="pillar-desc">We don't just help funding ventures. We co-build them — from ideation to market, with skin in the game.</p>
+        </div>
+        <ul class="pillar-capabilities">
+          <li>Venture ideation & validation</li>
+          <li>Business model structuring</li>
+          <li>Fundraising strategy</li>
+          <li>Selective capital allocation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATOR -->
+<section class="differentiator" id="diff">
+  <div class="container">
+    <div class="diff-grid">
+      <div class="diff-left">
+        <p class="section-label reveal">Why Momentz</p>
+        <h2 class="diff-statement reveal">We build what others <em>only advise.</em></h2>
+        <p class="diff-body reveal">Momentz is not a consulting firm, not a VC, not an agency. It's a hybrid operator model that combines strategy, execution, and investment into one architecture — because growth requires all three.</p>
+      </div>
+      <div class="diff-right reveal">
+        <table class="diff-table">
+          <thead>
+            <tr><th>Player</th><th>Limitation</th><th>Momentz</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Consultants</td><td>Strategy only</td><td>Strategy + Execution</td></tr>
+            <tr><td>Agencies</td><td>Tactical</td><td>Strategic + Operational</td></tr>
+            <tr><td>VCs</td><td>Capital only</td><td>Build + Structure + Invest</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENTURES -->
+<section class="ventures" id="ventures">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <p class="section-label reveal">Portfolio</p>
+        <h2 class="section-title reveal">Ventures we're building.</h2>
+      </div>
+      <p class="section-desc reveal">We build alongside founders — co-creating the ventures, not just funding them.</p>
+    </div>
+    <div class="ventures-list">
+      <div class="venture-item reveal"><div class="venture-name">Korus</div><div class="venture-desc">Korus is an AI-powered content platform for premium publishers, creators and influencers — bringing the precision of media advertising to the creator economy.</div><div class="venture-tag">AdTech / AI</div></div>
+      <div class="venture-item venture-group reveal"><div class="venture-name">B2C Apps</div><div class="venture-desc venture-subs"><div class="venture-sub"><span class="sub-name">Renovation Studio</span> — Premium renovation management for the most discerning homeowners. On time. On budget. No stress.</div><div class="venture-sub"><span class="sub-name">Lens.Design</span> — Lens.Design turns visual inspiration into actionable discovery — an AI layer for the world of architecture and design.</div></div><div class="venture-tag">Consumer</div></div>
+      <div class="venture-item reveal"><div class="venture-name">Coming Soon</div><div class="venture-desc">New ventures currently in ideation and validation. We're always building the next one.</div><div class="venture-tag">Pipeline</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <p class="section-label reveal">Get in touch</p>
+    <h2 class="contact-title reveal">We partner with a<br>limited number of<br><em>companies.</em></h2>
+    <p class="contact-sub reveal">Selective by design. If you're building something ambitious, let's talk.</p>
+    <a href="mailto:fabio@momentz.team" class="contact-cta reveal">
+      <span>Start a conversation</span>
+      <svg class="arrow" width="20" height="12" viewBox="0 0 20 12" fill="none">
+        <path d="M14 1L19 6M19 6L14 11M19 6H0" stroke="currentColor" stroke-width="1"/>
+      </svg>
+    </a>
+    <p class="contact-email reveal">Or reach us directly at <a href="mailto:fabio@momentz.team">fabio@momentz.team</a></p>
+  </div>
+</section>
+
+<!-- FAQ - SEO + GEO optimized -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <p class="section-label reveal">Questions</p>
+        <h2 class="section-title reveal">Frequently asked.</h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>What is a growth and venture architecture firm?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>A growth and venture architecture firm combines strategic advisory, operational execution, and selective capital allocation into one model. Rather than just advising (like consultants) or just funding (like VCs), Momentz builds alongside the companies it works with — structuring market entry, scaling operations, and co-creating ventures from the ground up.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>Who does Momentz work with?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Momentz partners with mid-size companies ready to scale internationally, scale-ups entering new markets, and founders building category-defining startups. On the investment side, Momentz also works with investors seeking structured venture creation and corporates looking for new growth engines. The firm is selective by design and partners with a limited number of companies at any given time.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>Where is Momentz based and which markets does it cover?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Momentz is headquartered in Milan, Italy, with an operating geography that spans Europe and beyond. The firm helps local European companies expand internationally and assists global companies in entering and scaling within new markets across the continent.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>How is Momentz different from a consulting firm?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Traditional consulting firms deliver strategy decks and recommendations. Momentz goes further: it executes the strategy, structures the operations, and in many cases co-invests alongside the companies it supports. Every engagement is built for long-term enterprise value, not billable hours. Momentz builds from within, not advises from the outside.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>What ventures has Momentz built?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Momentz's portfolio includes Korus, an AI-powered content platform bringing media advertising precision to the creator economy; Renovation Studio, a premium renovation management service; and Lens.Design, an AI-driven platform turning visual inspiration into actionable discovery for architecture and design. Additional ventures are continuously in development.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">&copy; 2026 Momentz. All rights reserved.</div>
+      <div class="footer-right">
+        <a href="#">LinkedIn</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Mobile nav toggle
+  const mobileBtn = document.querySelector('.mobile-nav-btn');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+  const mainNav = document.getElementById('mainNav');
+
+  mobileBtn.addEventListener('click', () => {
+    mobileBtn.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+    mainNav.classList.toggle('nav-open');
+    document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      mobileBtn.classList.remove('active');
+      mobileNav.classList.remove('active');
+      mainNav.classList.remove('nav-open');
+      document.body.style.overflow = '';
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    });
+  });
+
+  // Cursor glow
+  const glow = document.getElementById('cursorGlow');
+  let glowX = 0, glowY = 0, currentX = 0, currentY = 0;
+  document.addEventListener('mousemove', (e) => { glowX = e.clientX; glowY = e.clientY; });
+  function animateGlow() {
+    currentX += (glowX - currentX) * 0.08;
+    currentY += (glowY - currentY) * 0.08;
+    glow.style.left = currentX + 'px';
+    glow.style.top = currentY + 'px';
+    requestAnimationFrame(animateGlow);
+  }
+  animateGlow();
+  if (window.innerWidth < 768) glow.style.display = 'none';
+
+  // Nav scroll
+  ScrollTrigger.create({
+    start: 'top -80',
+    onUpdate: (self) => { document.getElementById('mainNav').classList.toggle('scrolled', self.progress > 0); }
+  });
+
+  // Hero entrance
+  gsap.set('.hero-label span', { y: 20, opacity: 0 });
+  gsap.set('.hero-sub span', { y: 20, opacity: 0 });
+  gsap.set('.hero-cta', { y: 20, opacity: 0 });
+  gsap.set('.scroll-indicator', { opacity: 0 });
+
+  const heroTL = gsap.timeline({ defaults: { ease: 'power4.out' }});
+  heroTL
+    .to('.hero-label span', { y: 0, opacity: 1, duration: 0.8, delay: 0.3 })
+    .to('.hero-title .line-inner', { y: 0, duration: 1.2, stagger: 0.12 }, '-=0.4')
+    .to('.hero-sub span', { y: 0, opacity: 1, duration: 0.8 }, '-=0.7')
+    .to('.hero-cta', { y: 0, opacity: 1, duration: 0.8 }, '-=0.5')
+    .to('.scroll-indicator', { opacity: 1, duration: 0.6 }, '-=0.3');
+
+  // Manifesto word reveal
+  const manifestoEl = document.getElementById('manifestoText');
+  const manifestoText = manifestoEl.textContent.trim();
+  manifestoEl.innerHTML = '';
+  const words = manifestoText.split(/\s+/);
+  words.forEach((word, i) => {
+    const span = document.createElement('span');
+    span.classList.add('word');
+    span.textContent = word;
+    manifestoEl.appendChild(span);
+    if (i < words.length - 1) manifestoEl.appendChild(document.createTextNode(' '));
+  });
+  const wordEls = manifestoEl.querySelectorAll('.word');
+  ScrollTrigger.create({
+    trigger: '.manifesto',
+    start: 'top 75%',
+    end: 'bottom 40%',
+    scrub: true,
+    onUpdate: (self) => {
+      const activeIndex = Math.floor(self.progress * wordEls.length);
+      wordEls.forEach((word, i) => { word.classList.toggle('active', i <= activeIndex); });
+    }
+  });
+
+  // General reveals
+  document.querySelectorAll('.reveal').forEach((el) => {
+    gsap.fromTo(el, { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Pillar stagger
+  gsap.fromTo('.pillar-card', { y: 60, opacity: 0 }, {
+    y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+    scrollTrigger: { trigger: '.pillars-grid', start: 'top 80%' }
+  });
+
+  // Diff table
+  gsap.fromTo('.diff-table tr', { x: 30, opacity: 0 }, {
+    x: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.diff-table', start: 'top 80%' }
+  });
+
+  // Ventures
+  gsap.fromTo('.venture-item', { y: 30, opacity: 0 }, {
+    y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out',
+    scrollTrigger: { trigger: '.ventures-list', start: 'top 80%' }
+  });
+
+  // Hero parallax
+  gsap.to('.hero-title', { y: -80, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }});
+  gsap.to('.hero-sub', { y: -40, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }});
+
+  // Smooth anchor scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Dividers
+  document.querySelectorAll('.section-divider').forEach(div => {
+    gsap.fromTo(div, { scaleX: 0 }, {
+      scaleX: 1, duration: 1.2, ease: 'power3.inOut',
+      scrollTrigger: { trigger: div, start: 'top 90%' }
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.faq-question').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      // Open clicked (if wasn't already open)
+      if (!isActive) {
+        item.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
