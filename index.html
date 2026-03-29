@@ -157,6 +157,34 @@
     padding-top: 100px;
   }
 
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 0;
+  }
+
+  .hero-animation {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    position: relative;
+    order: -1;
+  }
+
+  .hero-animation img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-animation { display: none !important; }
+  }
+
   .hero-content { position: relative; z-index: 2; }
 
   .hero-label {
@@ -911,6 +939,16 @@
 
     .hero { min-height: 100vh; padding-top: 100px; }
 
+    .hero-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .hero-animation {
+      display: flex;
+      height: 90vh;
+    }
+
     .manifesto { padding: 160px 0; }
     .pillars, .differentiator, .about, .ventures, .faq { padding: 120px 0; }
     .contact { padding: 160px 0 120px; }
@@ -1112,24 +1150,29 @@
 <main>
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="container hero-content">
-    <div class="hero-label">
-      <span>Growth & Venture Architecture</span>
+  <div class="container hero-inner">
+    <div class="hero-animation" aria-hidden="true">
+      <img src="momentz-constellation.svg" alt="">
     </div>
-    <h1 class="hero-title">
-      <span class="line"><span class="line-inner">Growth happens</span></span>
-      <span class="line"><span class="line-inner">in decisive</span></span>
-      <span class="line"><span class="line-inner"><em>moments.</em></span></span>
-    </h1>
-    <p class="hero-sub">
-      <span>We identify, structure, and activate the moments that turn ambition into scalable international growth.</span>
-    </p>
-    <a href="#contact" class="hero-cta">
-      <span>Start a conversation</span>
-      <svg class="arrow" width="20" height="12" viewBox="0 0 20 12" fill="none">
-        <path d="M14 1L19 6M19 6L14 11M19 6H0" stroke="currentColor" stroke-width="1"/>
-      </svg>
-    </a>
+    <div class="hero-content">
+      <div class="hero-label">
+        <span>Growth & Venture Architecture</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Growth happens</span></span>
+        <span class="line"><span class="line-inner">in decisive</span></span>
+        <span class="line"><span class="line-inner"><em>moments.</em></span></span>
+      </h1>
+      <p class="hero-sub">
+        <span>We identify, structure, and activate the moments that turn ambition into scalable international growth.</span>
+      </p>
+      <a href="#contact" class="hero-cta">
+        <span>Start a conversation</span>
+        <svg class="arrow" width="20" height="12" viewBox="0 0 20 12" fill="none">
+          <path d="M14 1L19 6M19 6L14 11M19 6H0" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </a>
+    </div>
   </div>
   <div class="scroll-indicator">
     <span>Scroll</span>
@@ -1394,9 +1437,11 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.set('.hero-sub span', { y: 20, opacity: 0 });
   gsap.set('.hero-cta', { y: 20, opacity: 0 });
   gsap.set('.scroll-indicator', { opacity: 0 });
+  gsap.set('.hero-animation img', { opacity: 0, scale: 0.95 });
 
   const heroTL = gsap.timeline({ defaults: { ease: 'power4.out' }});
   heroTL
+    .to('.hero-animation img', { opacity: 0.22, scale: 1, duration: 2, ease: 'power2.out' }, 0)
     .to('.hero-label span', { y: 0, opacity: 1, duration: 0.8, delay: 0.3 })
     .to('.hero-title .line-inner', { y: 0, duration: 1.2, stagger: 0.12 }, '-=0.4')
     .to('.hero-sub span', { y: 0, opacity: 1, duration: 0.8 }, '-=0.7')
@@ -1418,8 +1463,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const wordEls = manifestoEl.querySelectorAll('.word');
   ScrollTrigger.create({
     trigger: '.manifesto',
-    start: 'top 75%',
-    end: 'bottom 40%',
+    start: 'top 70%',
+    end: 'center 40%',
     scrub: true,
     onUpdate: (self) => {
       const activeIndex = Math.floor(self.progress * wordEls.length);
