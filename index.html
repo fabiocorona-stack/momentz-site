@@ -330,22 +330,39 @@
     line-height: 1.7;
   }
 
-  .pillars-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
+  /* Carousel container */
+  .pillars-carousel {
+    position: relative;
+    width: 100%;
+    perspective: 1200px;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pillars-track {
+    position: relative;
+    width: 380px;
+    height: 460px;
+    transform-style: preserve-3d;
   }
 
   .pillar-card {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(160deg, rgba(42,41,37,0.6) 0%, rgba(10,10,10,1) 100%);
-    padding: clamp(36px, 4vw, 56px);
-    position: relative;
-    overflow: hidden;
-    transition: background 0.5s;
-    min-height: 420px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    backface-visibility: hidden;
+    border: 1px solid rgba(184,160,128,0.08);
+    cursor: pointer;
+    transition: border-color 0.5s, background 0.5s;
+    overflow: hidden;
   }
 
   .pillar-card::before {
@@ -358,8 +375,11 @@
     transition: opacity 0.5s;
   }
 
-  .pillar-card:hover::before { opacity: 1; }
-  .pillar-card:hover { background: linear-gradient(160deg, rgba(42,41,37,0.8) 0%, rgba(15,15,12,1) 100%); }
+  .pillar-card.active {
+    border-color: rgba(184,160,128,0.25);
+    background: linear-gradient(160deg, rgba(50,48,42,0.8) 0%, rgba(12,12,10,1) 100%);
+  }
+  .pillar-card.active::before { opacity: 1; }
 
   .pillar-number {
     font-family: var(--font-display);
@@ -371,11 +391,11 @@
     transition: color 0.5s;
   }
 
-  .pillar-card:hover .pillar-number { color: var(--accent); }
+  .pillar-card.active .pillar-number { color: var(--accent); }
 
   .pillar-name {
     font-family: var(--font-display);
-    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    font-size: 1.5rem;
     font-weight: 400;
     margin-bottom: 20px;
     color: var(--white);
@@ -407,6 +427,58 @@
     width: 6px; height: 1px;
     background: var(--accent);
   }
+
+  /* Carousel navigation dots */
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 48px;
+  }
+
+  .carousel-dot {
+    width: 32px;
+    height: 2px;
+    background: var(--gray-800);
+    border: none;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0;
+  }
+
+  .carousel-dot.active {
+    background: var(--accent);
+    width: 48px;
+  }
+
+  /* Carousel arrows */
+  .carousel-arrows {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    padding: 0 clamp(0px, 2vw, 20px);
+  }
+
+  .carousel-arrow {
+    width: 44px; height: 44px;
+    background: rgba(42,41,37,0.5);
+    border: 1px solid rgba(184,160,128,0.15);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: all;
+    transition: all 0.3s;
+    opacity: 0.6;
+  }
+
+  .carousel-arrow:hover { opacity: 1; border-color: var(--accent); }
+  .carousel-arrow svg { width: 16px; height: 16px; }
 
   /* ===== DIFFERENTIATOR ===== */
   .differentiator {
@@ -894,8 +966,9 @@
   .pillars, .differentiator, .about, .ventures { padding: 80px 0; }
   .contact { padding: 100px 0 80px; }
 
-  .pillars-grid { grid-template-columns: 1fr; gap: 2px; }
-  .pillar-card { min-height: auto; padding: 32px; }
+  .pillars-track { width: 280px; height: 440px; }
+  .pillar-card { padding: 28px; }
+  .carousel-arrows { display: none; }
 
   .diff-grid { grid-template-columns: 1fr; gap: 40px; }
 
@@ -941,7 +1014,9 @@
 
     .about-stats { grid-template-columns: 1fr 1fr; gap: 32px; }
 
-    .pillar-card { padding: clamp(36px, 4vw, 56px); }
+    .pillars-track { width: 360px; height: 460px; }
+    .pillar-card { padding: 40px; }
+    .carousel-arrows { display: flex; }
 
     .footer-inner { flex-direction: row; }
 
@@ -952,8 +1027,8 @@
 
   /* ===== DESKTOP (1024px+) ===== */
   @media (min-width: 1024px) {
-    .pillars-grid { grid-template-columns: repeat(3, 1fr); }
-    .pillar-card { min-height: 420px; }
+    .pillars-track { width: 400px; height: 480px; }
+    .pillar-card { padding: 48px; }
 
     .diff-grid { gap: 80px; }
     .about-grid { gap: 80px; }
@@ -1174,46 +1249,61 @@
       </div>
       <p class="section-desc reveal">We don't advise from the outside. We build from within — combining strategy, execution, and capital under one roof.</p>
     </div>
-    <div class="pillars-grid">
-      <div class="pillar-card reveal">
-        <div>
-          <div class="pillar-number">01</div>
-          <h3 class="pillar-name">Expansion Architecture</h3>
-          <p class="pillar-desc">Structured market entry for local companies going international — and global companies entering new markets.</p>
+    <div class="pillars-carousel reveal" id="pillarsCarousel">
+      <div class="pillars-track" id="pillarsTrack">
+        <div class="pillar-card" data-index="0">
+          <div>
+            <div class="pillar-number">01</div>
+            <h3 class="pillar-name">Expansion Architecture</h3>
+            <p class="pillar-desc">Structured market entry for local companies going international — and global companies entering new markets.</p>
+          </div>
+          <ul class="pillar-capabilities">
+            <li>Market entry strategy</li>
+            <li>Go-to-market design</li>
+            <li>Local partnerships & setup</li>
+            <li>Revenue acceleration frameworks</li>
+          </ul>
         </div>
-        <ul class="pillar-capabilities">
-          <li>Market entry strategy</li>
-          <li>Go-to-market design</li>
-          <li>Local partnerships & setup</li>
-          <li>Revenue acceleration frameworks</li>
-        </ul>
-      </div>
-      <div class="pillar-card reveal">
-        <div>
-          <div class="pillar-number">02</div>
-          <h3 class="pillar-name">Growth Execution</h3>
-          <p class="pillar-desc">Operational infrastructure that turns strategy into performance — structuring the engine, not just the idea.</p>
+        <div class="pillar-card" data-index="1">
+          <div>
+            <div class="pillar-number">02</div>
+            <h3 class="pillar-name">Growth Execution</h3>
+            <p class="pillar-desc">Operational infrastructure that turns strategy into performance — structuring the engine, not just the idea.</p>
+          </div>
+          <ul class="pillar-capabilities">
+            <li>Operational structuring</li>
+            <li>Commercial scaling</li>
+            <li>Performance frameworks</li>
+            <li>Process optimization</li>
+          </ul>
         </div>
-        <ul class="pillar-capabilities">
-          <li>Operational structuring</li>
-          <li>Commercial scaling</li>
-          <li>Performance frameworks</li>
-          <li>Process optimization</li>
-        </ul>
-      </div>
-      <div class="pillar-card reveal">
-        <div>
-          <div class="pillar-number">03</div>
-          <h3 class="pillar-name">Venture Catalyst</h3>
-          <p class="pillar-desc">We don't just help funding ventures. We co-build them — from ideation to market, with skin in the game.</p>
+        <div class="pillar-card" data-index="2">
+          <div>
+            <div class="pillar-number">03</div>
+            <h3 class="pillar-name">Venture Catalyst</h3>
+            <p class="pillar-desc">We don't just help funding ventures. We co-build them — from ideation to market, with skin in the game.</p>
+          </div>
+          <ul class="pillar-capabilities">
+            <li>Venture ideation & validation</li>
+            <li>Business model structuring</li>
+            <li>Fundraising strategy</li>
+            <li>Selective capital allocation</li>
+          </ul>
         </div>
-        <ul class="pillar-capabilities">
-          <li>Venture ideation & validation</li>
-          <li>Business model structuring</li>
-          <li>Fundraising strategy</li>
-          <li>Selective capital allocation</li>
-        </ul>
       </div>
+      <div class="carousel-arrows">
+        <button class="carousel-arrow" id="carouselPrev" aria-label="Previous">
+          <svg viewBox="0 0 20 12" fill="none"><path d="M6 1L1 6M1 6L6 11M1 6H20" stroke="currentColor" stroke-width="1"/></svg>
+        </button>
+        <button class="carousel-arrow" id="carouselNext" aria-label="Next">
+          <svg viewBox="0 0 20 12" fill="none"><path d="M14 1L19 6M19 6L14 11M19 6H0" stroke="currentColor" stroke-width="1"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="carousel-nav" id="carouselNav">
+      <button class="carousel-dot active" data-index="0" aria-label="Pillar 1"></button>
+      <button class="carousel-dot" data-index="1" aria-label="Pillar 2"></button>
+      <button class="carousel-dot" data-index="2" aria-label="Pillar 3"></button>
     </div>
   </div>
 </section>
@@ -1451,11 +1541,115 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Pillar stagger
-  gsap.fromTo('.pillar-card', { y: 60, opacity: 0 }, {
-    y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-    scrollTrigger: { trigger: '.pillars-grid', start: 'top 80%' }
-  });
+  // === 3D Pillar Carousel ===
+  (function() {
+    const cards = document.querySelectorAll('.pillar-card');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    let current = 0;
+    let autoTimer;
+    const TOTAL = cards.length;
+    const AUTO_DELAY = 5000;
+
+    function positionCards(activeIndex, animate) {
+      const dur = animate ? 0.8 : 0;
+      const ease = 'power3.inOut';
+
+      cards.forEach((card, i) => {
+        card.classList.remove('active');
+        let rotateY = 0, translateX = 0, translateZ = 0, opacity = 0, scale = 1, zIndex = 0;
+
+        const diff = ((i - activeIndex) % TOTAL + TOTAL) % TOTAL;
+
+        if (diff === 0) {
+          // Front card
+          rotateY = 0; translateX = 0; translateZ = 0;
+          opacity = 1; scale = 1; zIndex = 3;
+          card.classList.add('active');
+        } else if (diff === 1) {
+          // Right card
+          rotateY = 45; translateX = 260; translateZ = -180;
+          opacity = 0.4; scale = 0.85; zIndex = 1;
+        } else if (diff === 2 || diff === -1) {
+          // Left card
+          rotateY = -45; translateX = -260; translateZ = -180;
+          opacity = 0.4; scale = 0.85; zIndex = 1;
+        }
+
+        gsap.to(card, {
+          rotateY: rotateY,
+          x: translateX,
+          z: translateZ,
+          opacity: opacity,
+          scale: scale,
+          zIndex: zIndex,
+          duration: dur,
+          ease: ease,
+          overwrite: true
+        });
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIndex);
+      });
+    }
+
+    function goTo(index, animate) {
+      current = ((index % TOTAL) + TOTAL) % TOTAL;
+      positionCards(current, animate !== false);
+      resetAutoplay();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function resetAutoplay() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(next, AUTO_DELAY);
+    }
+
+    // Click on side cards to navigate
+    cards.forEach((card, i) => {
+      card.addEventListener('click', () => {
+        if (i !== current) goTo(i);
+      });
+    });
+
+    // Dots
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goTo(parseInt(dot.dataset.index));
+      });
+    });
+
+    // Arrows
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    // Touch swipe support
+    let touchStartX = 0;
+    const carousel = document.getElementById('pillarsCarousel');
+    carousel.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, {passive: true});
+    carousel.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+    });
+
+    // Initial position (no animation) + entrance via ScrollTrigger
+    gsap.set('.pillars-carousel', { opacity: 0, y: 60 });
+    positionCards(0, false);
+
+    ScrollTrigger.create({
+      trigger: '.pillars-carousel',
+      start: 'top 80%',
+      onEnter: () => {
+        gsap.to('.pillars-carousel', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' });
+        resetAutoplay();
+      },
+      once: true
+    });
+  })();
 
   // Diff table
   gsap.fromTo('.diff-table tr', { x: 30, opacity: 0 }, {
