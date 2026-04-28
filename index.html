@@ -155,34 +155,19 @@
     justify-content: center;
     position: relative;
     padding-top: 100px;
+    overflow: hidden;
   }
 
-  .hero-inner {
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: center;
-    gap: 0;
-  }
-
-  .hero-animation {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    height: 80vh;
-    position: relative;
-    order: -1;
-  }
-
-  .hero-animation img {
+  #aurora-canvas {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    opacity: 0.22;
-    pointer-events: none;
+    z-index: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-animation { display: none !important; }
+    #aurora-canvas { display: none; }
   }
 
   .hero-content { position: relative; z-index: 2; }
@@ -206,7 +191,7 @@
     line-height: 1.08;
     letter-spacing: -0.02em;
     color: var(--white);
-    max-width: 900px;
+    max-width: 1100px;
     margin-bottom: 48px;
   }
 
@@ -939,16 +924,6 @@
 
     .hero { min-height: 100vh; padding-top: 100px; }
 
-    .hero-inner {
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-    }
-
-    .hero-animation {
-      display: flex;
-      height: 90vh;
-    }
-
     .manifesto { padding: 160px 0; }
     .pillars, .differentiator, .about, .ventures, .faq { padding: 120px 0; }
     .contact { padding: 160px 0 120px; }
@@ -1150,10 +1125,8 @@
 <main>
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="container hero-inner">
-    <div class="hero-animation" aria-hidden="true">
-      <img src="momentz-constellation.svg" alt="">
-    </div>
+  <canvas id="aurora-canvas" aria-hidden="true"></canvas>
+  <div class="container">
     <div class="hero-content">
       <div class="hero-label">
         <span>Growth & Venture Architecture</span>
@@ -1437,13 +1410,11 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.set('.hero-sub span', { y: 20, opacity: 0 });
   gsap.set('.hero-cta', { y: 20, opacity: 0 });
   gsap.set('.scroll-indicator', { opacity: 0 });
-  gsap.set('.hero-animation img', { opacity: 0, scale: 0.95 });
 
   const heroTL = gsap.timeline({ defaults: { ease: 'power4.out' }});
   heroTL
-    .to('.hero-animation img', { opacity: 0.22, scale: 1, duration: 1.6, ease: 'power2.out' }, 0)
-    .to('.hero-label span', { y: 0, opacity: 1, duration: 0.8 }, 0.4)
-    .to('.hero-title .line-inner', { y: 0, duration: 1, stagger: 0.1 }, 0.7)
+    .to('.hero-label span', { y: 0, opacity: 1, duration: 0.8 }, 0.3)
+    .to('.hero-title .line-inner', { y: 0, duration: 1, stagger: 0.1 }, 0.5)
     .to('.hero-sub span', { y: 0, opacity: 1, duration: 0.7 }, '-=0.5')
     .to('.hero-cta', { y: 0, opacity: 1, duration: 0.7 }, '-=0.4')
     .to('.scroll-indicator', { opacity: 1, duration: 0.5 }, '-=0.2');
@@ -1534,6 +1505,146 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // === INTERACTIVE AURORA MESH — WebGL Shader ===
+  (function() {
+    const canvas = document.getElementById('aurora-canvas');
+    if (!canvas) return;
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return;
+
+    const vertexShaderSource = 'attribute vec2 a_position; void main() { gl_Position = vec4(a_position, 0.0, 1.0); }';
+
+    const fragmentShaderSource = `precision highp float;
+uniform vec2 u_resolution; uniform float u_time; uniform vec2 u_mouse; uniform float u_mouse_influence;
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+float snoise(vec2 v){
+  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+  vec2 i=floor(v+dot(v,C.yy));vec2 x0=v-i+dot(i,C.xx);
+  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+  vec4 x12=x0.xyxy+C.xxzz;x12.xy-=i1;i=mod289(i);
+  vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+  m=m*m;m=m*m;
+  vec3 x=2.0*fract(p*C.www)-1.0;vec3 h=abs(x)-0.5;
+  vec3 ox=floor(x+0.5);vec3 a0=x-ox;
+  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+  vec3 g;g.x=a0.x*x0.x+h.x*x0.y;g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+  return 130.0*dot(m,g);
+}
+float metaball(vec2 p,vec2 center,float radius){float d=length(p-center);return radius*radius/(d*d+0.001);}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_resolution;vec2 aspect=vec2(u_resolution.x/u_resolution.y,1.0);
+  vec2 p=uv*aspect;float t=u_time*0.15;
+  vec2 mouse=u_mouse*aspect;
+  vec2 b1=vec2(0.3+0.2*sin(t*0.7),0.4+0.15*cos(t*0.5))*aspect;
+  vec2 b2=vec2(0.7+0.15*cos(t*0.6),0.3+0.2*sin(t*0.8))*aspect;
+  vec2 b3=vec2(0.5+0.25*sin(t*0.4),0.7+0.15*cos(t*0.9))*aspect;
+  vec2 b4=vec2(0.2+0.1*cos(t*0.9),0.6+0.2*sin(t*0.3))*aspect;
+  vec2 b5=vec2(0.8+0.12*sin(t*0.5),0.65+0.18*cos(t*0.7))*aspect;
+  vec2 b6=vec2(0.6+0.2*cos(t*0.3),0.2+0.1*sin(t*1.1))*aspect;
+  float field=0.0;
+  field+=metaball(p,b1,0.18);field+=metaball(p,b2,0.15);field+=metaball(p,b3,0.20);
+  field+=metaball(p,b4,0.12);field+=metaball(p,b5,0.14);field+=metaball(p,b6,0.16);
+  float mouseR=0.22*u_mouse_influence;
+  field+=metaball(p,mouse,mouseR);
+  vec2 mOff1=mouse+vec2(snoise(vec2(t*2.0,0.0))*0.08,snoise(vec2(0.0,t*2.0))*0.08);
+  vec2 mOff2=mouse+vec2(snoise(vec2(t*1.5,3.0))*0.12,snoise(vec2(3.0,t*1.5))*0.12);
+  field+=metaball(p,mOff1,0.10*u_mouse_influence);
+  field+=metaball(p,mOff2,0.08*u_mouse_influence);
+  float n1=snoise(p*2.0+t*0.5)*0.3;float n2=snoise(p*3.5-t*0.3)*0.15;
+  field+=n1*0.15+n2*0.1;
+  vec3 col=vec3(0.04,0.04,0.035);
+  float edge=smoothstep(0.8,1.6,field);float core=smoothstep(1.4,2.5,field);
+  float bright=smoothstep(2.2,3.5,field);float hot=smoothstep(3.0,4.5,field);
+  vec3 copper=vec3(0.55,0.35,0.22);vec3 amber=vec3(0.63,0.47,0.27);
+  vec3 gold=vec3(0.72,0.63,0.50);vec3 cream=vec3(0.88,0.80,0.65);
+  col=mix(col,copper*0.4,edge*0.6);col=mix(col,amber*0.5,core*0.5);
+  col=mix(col,gold*0.6,bright*0.4);col=mix(col,cream*0.3,hot*0.3);
+  float vig=1.0-length((uv-0.5)*1.3);vig=smoothstep(0.0,0.7,vig);
+  col*=vig*0.8+0.2;col*=1.2;
+  gl_FragColor=vec4(col,1.0);
+}`;
+
+    function createShader(type, source) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, source);
+      gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error('Shader:', gl.getShaderInfoLog(s)); gl.deleteShader(s); return null; }
+      return s;
+    }
+
+    const vs = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+    const fs = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { console.error('Link:', gl.getProgramInfoLog(prog)); return; }
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'a_position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes = gl.getUniformLocation(prog, 'u_resolution');
+    const uTime = gl.getUniformLocation(prog, 'u_time');
+    const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+    const uMI = gl.getUniformLocation(prog, 'u_mouse_influence');
+
+    let mouse = {x: 0.5, y: 0.5}, smooth = {x: 0.5, y: 0.5};
+    let influence = 0.0, active = false, t0 = Date.now(), raf;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    const hero = document.getElementById('hero');
+    hero.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = (e.clientX - r.left) / r.width;
+      mouse.y = 1.0 - (e.clientY - r.top) / r.height;
+      active = true;
+    });
+    hero.addEventListener('mouseleave', () => { active = false; });
+    hero.addEventListener('touchmove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const tc = e.touches[0];
+      mouse.x = (tc.clientX - r.left) / r.width;
+      mouse.y = 1.0 - (tc.clientY - r.top) / r.height;
+      active = true;
+    }, {passive: true});
+    hero.addEventListener('touchend', () => { active = false; });
+    window.addEventListener('resize', resize);
+    resize();
+
+    function render() {
+      const t = (Date.now() - t0) / 1000;
+      smooth.x += (mouse.x - smooth.x) * 0.08;
+      smooth.y += (mouse.y - smooth.y) * 0.08;
+      influence += ((active ? 1.0 : 0.0) - influence) * 0.03;
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, t);
+      gl.uniform2f(uMouse, smooth.x, smooth.y);
+      gl.uniform1f(uMI, influence);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      raf = requestAnimationFrame(render);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(raf); }
+      else { t0 = Date.now(); render(); }
+    });
+
+    render();
+  })();
 });
 </script>
 </body>
