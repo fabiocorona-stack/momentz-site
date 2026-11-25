@@ -5289,9 +5289,8 @@ function plateMesh(imgOrVideo, spec, i, isVideo) {
     phase: i * 0.73,
     amp: 0.016 + (i % 5) * 0.004,
     px: home.x, py: home.y, pz: home.z,
-    vx: (Math.sin(i * 2.1) * 0.016),
-    vy: (Math.cos(i * 1.6) * 0.012),
-    vz: Math.sin(i * 0.9) * 0.008,
+    vx: 0, vy: 0, vz: 0,
+    desX: home.x, desY: home.y, desZ: home.z,
     rad: Math.max(width, height) * 0.42,
     isVideo: !!isVideo,
     essential: i < 6 || !!isVideo,
@@ -5332,6 +5331,7 @@ async function buildVentures() {
     clusterGroups.push(group);
 
     group.userData.basePos = group.position.clone();
+    group.userData.livePos = group.position.clone();
   }
 
   buildHalos();
@@ -5881,6 +5881,18 @@ let heroMoveU = 0;
 let heroFlip = null;
 let userTravel = null;
 const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+// Desktop/iPad constellation orbit: anti-clockwise around V01, one turn in ORBIT_PERIOD seconds.
+const ORBIT_PERIOD = 75;
+let orbitAngle = 0;
+let orbitRate = 1;
+let orbitRateVel = 0;
+const pointerFlow = {
+  vx: 0, vy: 0, svx: 0, svy: 0,
+  x: 0, y: 0, px: 0, py: 0,
+  lastTx: 0, lastTy: 0, hasLast: false,
+};
+const _liveBary = new THREE.Vector3();
+const _orbitPos = new THREE.Vector3();
 const _focus = new THREE.Vector3();
 const _look = new THREE.Vector3();
 const _cam = new THREE.Vector3();
@@ -6008,10 +6020,10 @@ function computeCamZOut() {
   const aspect = Math.max(0.25, innerWidth / innerHeight);
   let need = 14;
   for (const ven of VENTURES) {
-    const dx = Math.abs(ven.pos[0] - BARY.x) + pad;
-    const dy = Math.abs(ven.pos[1] - BARY.y) + pad;
-    const zRel = ven.pos[2] - BARY.z;
-    need = Math.max(need, dy / tanV + zRel, dx / (tanV * aspect) + zRel);
+    // orbit is a rigid XY rotation about the origin, so the framing radius is constant
+    const r = Math.hypot(ven.pos[0], ven.pos[1]) + pad;
+    const zRel = Math.abs(ven.pos[2]);
+    need = Math.max(need, r / tanV + zRel, r / (tanV * aspect) + zRel);
   }
   return need * (mobile ? 0.98 : 1.06);
 }
@@ -6085,7 +6097,7 @@ function nearestVenture(e) {
   pointer.y = -(e.clientY / innerHeight) * 2 + 1;
   let best = -1, bestD = Infinity;
   for (let i = 0; i < clusterGroups.length; i++) {
-    const pos = clusterGroups[i].userData.basePos;
+    const pos = clusterLivePos(i);
     if (!pos) continue;
     _proj.copy(pos).project(camera);
     const dx = (_proj.x - pointer.x) * innerWidth * 0.5;
@@ -6159,6 +6171,10 @@ function onMobilePointerEnd(e) {
 window.addEventListener("pointermove", (e) => {
   lastPX = e.clientX;
   lastPY = e.clientY;
+  if (!isMobile()) {
+    mouse.tx = (e.clientX / innerWidth) * 2 - 1;
+    mouse.ty = (e.clientY / innerHeight) * 2 - 1;
+  }
   if (isMobile() && swipe.tracking && e.pointerId === swipe.id && current === 0) {
     const dx = e.clientX - swipe.x0;
     const dy = e.clientY - swipe.y0;
@@ -6216,6 +6232,100 @@ function usePlatePhysics() {
   return !reduced && !isMobile();
 }
 
+function clusterLivePos(i) {
+  const g = clusterGroups[i];
+  if (g && g.userData.livePos) return g.userData.livePos;
+  if (g && g.userData.basePos) return g.userData.basePos;
+  const p = VENTURES[i] && VENTURES[i].pos;
+  return p ? _orbitPos.set(p[0], p[1], p[2]) : _orbitPos.set(0, 0, 0);
+}
+
+function spring1(val, vel, target, dt, omega) {
+  const acc = -2 * omega * vel - omega * omega * (val - target);
+  vel += acc * dt;
+  val += vel * dt;
+  return [val, vel];
+}
+
+function stepPointerFlow(dt) {
+  if (reduced || isMobile() || current !== 0) {
+    pointerFlow.vx = pointerFlow.vy = pointerFlow.svx = pointerFlow.svy = 0;
+    pointerFlow.x = pointerFlow.y = 0;
+    pointerFlow.px = pointerFlow.py = 0;
+    pointerFlow.pvx = pointerFlow.pvy = 0;
+    pointerFlow.hasLast = false;
+    return;
+  }
+  if (!pointerFlow.hasLast) {
+    pointerFlow.lastTx = mouse.tx;
+    pointerFlow.lastTy = mouse.ty;
+    pointerFlow.hasLast = true;
+  }
+  const inv = 1 / Math.max(dt, 1 / 240);
+  const rawVx = clamp((mouse.tx - pointerFlow.lastTx) * inv, -5.5, 5.5);
+  const rawVy = clamp((mouse.ty - pointerFlow.lastTy) * inv, -5.5, 5.5);
+  pointerFlow.lastTx = mouse.tx;
+  pointerFlow.lastTy = mouse.ty;
+  // smooth the velocity itself so flicks don't spike
+  const vK = 1 - Math.exp(-14 * dt);
+  pointerFlow.vx += (rawVx - pointerFlow.vx) * vK;
+  pointerFlow.vy += (rawVy - pointerFlow.vy) * vK;
+  // hold a gentle offset in the direction of motion; ease back when still
+  const gain = 0.16;
+  const tgtX = clamp(pointerFlow.vx * gain, -0.52, 0.52);
+  const tgtY = clamp(pointerFlow.vy * gain, -0.52, 0.52);
+  const pairX = spring1(pointerFlow.x, pointerFlow.px, tgtX, dt, 3.1);
+  const pairY = spring1(pointerFlow.y, pointerFlow.py, tgtY, dt, 3.1);
+  pointerFlow.x = pairX[0]; pointerFlow.px = pairX[1];
+  pointerFlow.y = pairY[0]; pointerFlow.py = pairY[1];
+}
+
+function stepOrbit(dt) {
+  if (reduced || isMobile()) {
+    orbitRate = 0;
+    orbitRateVel = 0;
+    return;
+  }
+  const want = (current !== 0) ? 0 : ((focused || hoverTarget >= 0) ? 0 : 1);
+  // ~0.9s ease to pause / resume so the field never lurches
+  const pair = spring1(orbitRate, orbitRateVel, want, dt, 3.6);
+  orbitRate = clamp(pair[0], 0, 1);
+  orbitRateVel = pair[1];
+  orbitAngle += (Math.PI * 2 / ORBIT_PERIOD) * orbitRate * dt;
+}
+
+function applyClusterMotion() {
+  const c = Math.cos(orbitAngle);
+  const s = Math.sin(orbitAngle);
+  const flowing = !reduced && !isMobile() && current === 0;
+  clusterGroups.forEach((g, i) => {
+    const base = g.userData.basePos;
+    if (!base) return;
+    let x = base.x, y = base.y, z = base.z;
+    if (flowing && i !== 0) {
+      // anti-clockwise in XY as seen from the camera (+Z)
+      x = base.x * c - base.y * s;
+      y = base.x * s + base.y * c;
+    }
+    if (flowing) {
+      const depth = 0.50 + clamp((z + 5.0) / 10.0, 0, 1) * 0.50;
+      x += pointerFlow.x * 0.48 * depth;
+      y += pointerFlow.y * 0.34 * depth;
+    }
+    if (!g.userData.livePos) g.userData.livePos = new THREE.Vector3();
+    g.userData.livePos.set(x, y, z);
+    g.position.set(x, y, z);
+  });
+  if (fieldMat && fieldMat.uniforms.uAttract) {
+    const arr = fieldMat.uniforms.uAttract.value;
+    clusterGroups.forEach((g, i) => {
+      if (i >= arr.length) return;
+      const live = g.userData.livePos || g.userData.basePos;
+      if (live) arr[i].copy(live);
+    });
+  }
+}
+
 function applyPlatePhysics(t, dt) {
   const phys = usePlatePhysics();
   const mobile = isMobile();
@@ -6240,77 +6350,66 @@ function applyPlatePhysics(t, dt) {
         const u = m.userData;
         u.px = u.home.x; u.py = u.home.y; u.pz = u.home.z;
         u.vx = u.vy = u.vz = 0;
+        u.desX = u.px; u.desY = u.py; u.desZ = u.pz;
       });
     } else {
-
-    const tight = (focused && ci === focusIndex) ? clamp((0.55 - zoom) / 0.55, 0, 1) * softAmt : 0;
-    const k = lerp(2.20, 3.45, tight);
-    const damp = lerp(3.70, 4.70, tight);
-    const wander = lerp(1, 0.28, tight);
-    const boundR = lerp(2.10, 1.72, tight);
-    const steps = dt > 0.020 ? 2 : 1;
-    const sdt = dt / steps;
-    for (let step = 0; step < steps; step++) {
+      const tight = (focused && ci === focusIndex) ? clamp((0.55 - zoom) / 0.55, 0, 1) * softAmt : 0;
+      const wander = lerp(1, 0.22, tight);
+      const omega = lerp(3.8, 5.0, tight);
+      // layered low-frequency Lissajous, unique phase per plate
       plates.forEach((m) => {
         const u = m.userData;
-        const wx = (Math.sin(t * 0.23 + u.phase) * 0.016 + Math.sin(t * 0.11 + u.phase * 1.7) * 0.009) * wander;
-        const wy = (Math.cos(t * 0.19 + u.phase * 1.3) * 0.012) * wander;
-        const wz = (Math.sin(t * 0.17 + u.phase * 0.8) * 0.008) * wander;
-        let ax = (u.home.x - u.px) * k + wx * 0.85 - u.vx * damp;
-        let ay = (u.home.y - u.py) * k + wy * 0.85 - u.vy * damp;
-        let az = (u.home.z - u.pz) * k * 0.75 + wz * 0.55 - u.vz * damp;
-        const r = Math.hypot(u.px, u.py);
-        if (r > boundR) {
-          const f = ((r - boundR) * 5.0) / r;
-          ax -= u.px * f;
-          ay -= u.py * f;
-        }
-        u.vx += ax * sdt;
-        u.vy += ay * sdt;
-        u.vz += az * sdt;
-        const vmax = 1.15;
-        const spd = Math.hypot(u.vx, u.vy, u.vz);
-        if (spd > vmax) { const sc = vmax / spd; u.vx *= sc; u.vy *= sc; u.vz *= sc; }
-        u.px += u.vx * sdt;
-        u.py += u.vy * sdt;
-        u.pz += u.vz * sdt;
+        const ph = u.phase;
+        const dx = (Math.sin(t * 0.13 + ph) * 0.070 + Math.sin(t * 0.21 + ph * 1.61) * 0.036) * wander;
+        const dy = (Math.sin(t * 0.09 + ph * 1.27 + 1.05) * 0.056 + Math.cos(t * 0.17 + ph * 0.83) * 0.028) * wander;
+        const dz = (Math.sin(t * 0.07 + ph * 0.71) * 0.034 + Math.sin(t * 0.19 + ph * 1.37) * 0.016) * wander;
+        const depthW = 0.32 + clamp((u.home.z + 1.8) / 3.4, 0, 1) * 0.68;
+        u.desX = u.home.x + dx + pointerFlow.x * 0.62 * depthW;
+        u.desY = u.home.y + dy + pointerFlow.y * 0.46 * depthW;
+        u.desZ = u.home.z + dz;
       });
 
-      for (let i = 0; i < plates.length; i++) {
-        const a = plates[i].userData;
-        for (let j = i + 1; j < plates.length; j++) {
-          const b = plates[j].userData;
-          const dx = b.px - a.px;
-          const dy = b.py - a.py;
-          const dz = (b.pz - a.pz) * 0.42;
-          const dist = Math.hypot(dx, dy, dz) || 0.0001;
-          const minD = a.rad + b.rad;
-          if (dist >= minD) continue;
-          const inv = 1 / dist;
-          const nx = dx * inv, ny = dy * inv, nz = dz * inv;
-          const push = (minD - dist) * 0.36;
-          a.px -= nx * push; a.py -= ny * push; a.pz -= nz * push * 0.45;
-          b.px += nx * push; b.py += ny * push; b.pz += nz * push * 0.45;
-          const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-          if (rv < 0) {
-            const imp = rv * 0.24;
-            a.vx += imp * nx; a.vy += imp * ny;
-            b.vx -= imp * nx; b.vy -= imp * ny;
+      // soft separation on the *targets* so plates ease apart, never collide with a bump
+      for (let pass = 0; pass < 2; pass++) {
+        for (let i = 0; i < plates.length; i++) {
+          const a = plates[i].userData;
+          for (let j = i + 1; j < plates.length; j++) {
+            const b = plates[j].userData;
+            const dx = b.desX - a.desX;
+            const dy = b.desY - a.desY;
+            const dz = (b.desZ - a.desZ) * 0.45;
+            const dist = Math.hypot(dx, dy, dz) || 0.0001;
+            const slack = (a.rad + b.rad) * 1.10;
+            if (dist >= slack) continue;
+            const u = 1 - dist / slack;
+            const push = (u * u) * slack * 0.18;
+            const inv = 1 / dist;
+            const nx = dx * inv, ny = dy * inv, nz = dz * inv;
+            a.desX -= nx * push; a.desY -= ny * push; a.desZ -= nz * push * 0.45;
+            b.desX += nx * push; b.desY += ny * push; b.desZ += nz * push * 0.45;
           }
         }
       }
-    }
+
+      plates.forEach((m) => {
+        const u = m.userData;
+        let sx = spring1(u.px, u.vx, u.desX, dt, omega);
+        let sy = spring1(u.py, u.vy, u.desY, dt, omega);
+        let sz = spring1(u.pz, u.vz, u.desZ, dt, omega * 0.92);
+        u.px = sx[0]; u.vx = sx[1];
+        u.py = sy[0]; u.vy = sy[1];
+        u.pz = sz[0]; u.vz = sz[1];
+        m.position.set(u.px, u.py, u.pz);
+      });
     }
 
-    const par = 0.06;
-    plates.forEach((m) => {
-      const u = m.userData;
-      m.position.set(
-        u.px + mouse.x * u.home.z * par,
-        u.py - mouse.y * u.home.z * par * 0.65,
-        u.pz
-      );
-    });
+    if (!phys) {
+      plates.forEach((m) => {
+        if (m.userData.forceHide) return;
+        const u = m.userData;
+        m.position.set(u.px, u.py, u.pz);
+      });
+    }
 
     // never let on-screen plates (including their top edge) sit under the header
     plates.forEach((m) => {
@@ -6344,8 +6443,6 @@ function applyPlatePhysics(t, dt) {
       }
       if (isMobile() && isFocusCluster) {
         const botLimit = innerHeight - 150;
-        const syBot = sy + (rad * 0.95 / Math.max(0.15, 1)) * (innerHeight * 0.22);
-        // approximate plate bottom; push up if it sits on the progress dots
         _safeTop.copy(_safeWorld);
         _safeTop.y -= rad * 0.95;
         _safeTop.project(camera);
@@ -6363,7 +6460,6 @@ function applyPlatePhysics(t, dt) {
 function applySympathy(t, dt) {
   const tempo = 0.62; // shared slow breath
   const hoverOn = hoverAmt.reduce((a, b) => a + b, 0);
-  const hoveredPos = (hoverTarget >= 0) ? clusterGroups[hoverTarget].userData.basePos : null;
 
   clusterGroups.forEach((g, i) => {
     const base = g.userData.basePos;
@@ -6376,31 +6472,16 @@ function applySympathy(t, dt) {
     const scale = 1 + breath + pulse + self * 0.055 - away;
     g.scale.setScalar(scale);
 
-    /* plate motion is handled in applyPlatePhysics */
-
+    /* desktop positions are applied in applyClusterMotion (orbit + flow) */
     if (isMobile()) {
-      g.position.copy(base);
-    } else if (hoveredPos && i !== hoverTarget && !reduced) {
-      const dx = hoveredPos.x - base.x;
-      const dy = hoveredPos.y - base.y;
-      const dz = hoveredPos.z - base.z;
-      const len = Math.hypot(dx, dy, dz) || 1;
-      const lean = 0.95 * hoverAmt[hoverTarget];
-      g.position.set(
-        base.x + (dx / len) * lean,
-        base.y + (dy / len) * lean,
-        base.z + (dz / len) * lean
-      );
-    } else {
       g.position.copy(base);
     }
 
-    // faint warmth on the focused island; others stay a touch quieter
+    const dimWarm = 1 - hoverOn * 0.085 + self * 0.12;
     g.children.forEach((m) => {
       if (!m.material || !m.userData || !m.userData.base) return;
       const dim = m.material.userData.baseDim || 1;
-      const warm = 1 - hoverOn * 0.085 + self * 0.12;
-      m.material.color.setRGB(dim * warm, dim * (warm * 0.997), dim * (warm * 0.985));
+      m.material.color.setRGB(dim * dimWarm, dim * (dimWarm * 0.997), dim * (dimWarm * 0.985));
     });
   });
 }
@@ -7079,10 +7160,10 @@ function setMobileIntroClock(totalT, opts = {}) {
 
 function applyZoom(z) {
   const t = ease(clamp(z, 0, 1));
-  const fp = VENTURES[focusIndex].pos;
-  _focus.set(fp[0], fp[1], fp[2]);
-  const bary = _look.set(BARY.x, BARY.y, BARY.z);
-  const target = new THREE.Vector3().lerpVectors(_focus, bary, t);
+  _focus.copy(clusterLivePos(focusIndex));
+  _look.set(0, 0, 0);
+  _liveBary.lerpVectors(_focus, _look, t);
+  const target = _liveBary;
   const dist = lerp(camZIn, camZOut, t);
   const yOff = lerp(0, innerWidth < 700 ? 0.25 : 0.55, t);
   _cam.set(target.x, target.y + yOff, target.z + dist);
@@ -7185,13 +7266,17 @@ function tick(now) {
 
   if (current === 0) {
     space.visible = true;
-    applySympathy(t, dt);
     if (isMobile()) {
+      applySympathy(t, dt);
       stepCinema(dt);
       applyMobileCamera();
       applyPlatePhysics(t, dt);
       updateClusterProgress();
     } else {
+      stepPointerFlow(dt);
+      stepOrbit(dt);
+      applyClusterMotion();
+      applySympathy(t, dt);
       applyZoom(zoom);
       applyPlatePhysics(t, dt);
     }
@@ -7261,6 +7346,16 @@ function tick(now) {
     exitFocus({ instant: !!instant });
   };
   window.__mzGetFocus = () => ({ focused, focusIndex, softAmt, zoom, zoomTarget, zoomVel, mobileIndex, mobileSlide });
+  window.__mzGetOrbit = () => ({ angle: orbitAngle, rate: orbitRate, period: ORBIT_PERIOD, flow: { x: pointerFlow.x, y: pointerFlow.y } });
+  window.__mzClusterScreen = (i) => {
+    const p = clusterLivePos(clamp(Math.round(i), 0, 5));
+    _proj.copy(p).project(camera);
+    return { x: (_proj.x * 0.5 + 0.5) * innerWidth, y: (-_proj.y * 0.5 + 0.5) * innerHeight };
+  };
+  window.__mzSetOrbit = (angle, rate) => {
+    if (angle != null) orbitAngle = +angle;
+    if (rate != null) { orbitRate = clamp(+rate, 0, 1); orbitRateVel = 0; }
+  };
   window.__mzMobileGo = (i, instant) => {
     if (!isMobile()) return;
     if (!cinemaDone) skipCinema();
