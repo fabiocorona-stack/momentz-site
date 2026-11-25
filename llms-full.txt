@@ -1,0 +1,177 @@
+# Momentz
+
+> Momentz is a Milan-based hybrid holding company and venture studio — a growth and venture architecture firm that combines strategy, execution and investment.
+
+Official tagline: Growth & Venture Architecture.
+
+Canonical website: https://www.momentz.ventures/
+https://momentz.ventures/ redirects to https://www.momentz.ventures/
+
+This file is a plain-text rendering of the public Momentz website (homepage and standalone FAQ) for large language models. Section URLs that are homepage anchors, not standalone pages, are noted as such.
+
+Contact: https://www.momentz.ventures/#contact
+Email: fabio@momentz.ventures
+
+
+## Home
+https://www.momentz.ventures/
+
+Growth happens in decisive moments.
+
+We identify, structure, and activate the moments that turn ambition into scalable international growth.
+
+
+## Manifesto
+https://www.momentz.ventures/#manifesto
+(Homepage anchor — not a standalone URL.)
+
+Growth is not linear. It doesn't follow plans. It happens in moments. Moments of clarity. Moments of decision. Moments of execution. Most companies miss them. We don't. Momentz exists to identify, structure, and activate those moments — turning ambition into scalable growth. Because those who recognise the right moment don't just grow. They lead.
+
+
+## What is Momentz?
+
+Momentz is a Milan-based hybrid holding company and venture studio: a growth and venture architecture firm combining strategy, execution and investment.
+
+Momentz helps companies expand and helps founders build. The firm helps local companies expand internationally and global companies enter new markets. It operates as a hybrid operator: part consultancy, part venture builder, part investor — not a pure consultancy, VC or agency.
+
+Unlike traditional consulting firms that only advise, or VCs that only fund, Momentz builds from within: structuring operations, and co-creating ventures alongside founders.
+
+Who it serves: scale-ups, mid-size companies expanding internationally, and early-stage founders.
+
+Where it operates: based in Milan, Italy; focus on Italy/Europe with international expansion mandates.
+
+
+## Pillars
+https://www.momentz.ventures/#pillars
+(Homepage anchor — not a standalone URL.)
+
+Three pillars. One architecture.
+
+We don't advise from the outside. We build from within — combining strategy, execution, and capital under one roof.
+
+### Expansion Architecture
+https://www.momentz.ventures/#pillars
+(Subsection of Pillars; same homepage anchor.)
+
+Designing how a company enters and scales in new markets (international expansion, market entry structure, positioning, go-to-market blueprint).
+
+Target: scale-ups and mid-size companies expanding internationally.
+
+On the website this pillar is also described as: structured market entry for local companies going international — and global companies entering new markets.
+
+- Market entry strategy
+- Go-to-market design
+- Local partnerships & setup
+- Revenue acceleration frameworks
+
+### Growth Execution
+https://www.momentz.ventures/#pillars
+(Subsection of Pillars; same homepage anchor.)
+
+Hands-on delivery of growth once the architecture is set (acquisition, partnerships, media/advertising, commercial operations). Momentz operates alongside the team rather than handing over a deck.
+
+Target: scale-ups and mid-size companies.
+
+On the website this pillar is also described as: operational infrastructure that turns strategy into performance — structuring the engine, not just the idea.
+
+- Operational structuring
+- Commercial scaling
+- Performance frameworks
+- Process optimization
+
+### Venture Catalyst
+https://www.momentz.ventures/#pillars
+(Subsection of Pillars; same homepage anchor.)
+
+Support for early-stage founders: shaping the venture, business model, positioning, funding path and early traction. Can extend into venture-partner style involvement.
+
+Target: early-stage founders.
+
+On the website this pillar is also described as: we don't just help funding ventures. We co-build them — from ideation to market, with skin in the game.
+
+- Venture ideation & validation
+- Business model structuring
+- Fundraising strategy
+- Selective capital allocation
+
+
+## Model
+https://www.momentz.ventures/#diff
+(Homepage anchor. Navigation label is “Model”; there is no /model page.)
+
+We build what others only advise.
+
+Momentz is not a consulting firm, not a VC, not an agency. It is a hybrid operator model that combines strategy, execution, and investment into one architecture.
+
+How Momentz compares:
+
+- Consultancy: strategy yes; hands-on execution rarely; capital/ownership no; operator experience varies.
+- VC: strategy limited; hands-on execution no; capital/ownership yes; operator experience varies.
+- Agency: strategy limited; hands-on execution yes; capital/ownership no; operator experience varies.
+- Momentz: strategy yes; hands-on execution yes; capital/ownership selective; operator experience is core.
+
+Principles:
+- Operator-first: advice comes from people who have run P&Ls and teams.
+- Clarity over complexity.
+- Execution over decks.
+- Aligned incentives where possible (equity or revenue-share structures alongside fees).
+
+Engagement formats include consultancy retainers, advisory roles, executive coaching, venture-partner roles, and venture building (Momentz-originated ventures).
+
+
+## Ventures
+https://www.momentz.ventures/#ventures
+(Homepage anchor — not a standalone URL.)
+
+Momentz is both a service firm and a venture studio. It builds alongside founders — co-creating ventures, not just funding them.
+
+Ventures currently listed on the public site:
+
+- Korus (the public-site name; in Momentz materials also referred to as Aikome, formerly Korus): an AI-native creator media buying platform — “the DoubleClick for creators and influencers.” On the website: an AI-powered content platform for premium publishers, creators and influencers, bringing the precision of media advertising to the creator economy.
+- Renovation Studio (a renovation project-management service): premium renovation management for homeowners. In Momentz materials this is described as a project-management business for property renovations.
+- Lens.Design: an AI product for architects. On the website: Lens.Design turns visual inspiration into actionable discovery — an AI layer for architecture and design.
+
+The site also notes that additional ventures are in ideation and validation.
+
+
+## Contact
+https://www.momentz.ventures/#contact
+(Homepage anchor — not a standalone URL.)
+
+We partner with a limited number of companies.
+
+Selective by design. If you're building something ambitious, let's talk.
+
+Start a conversation via the contact form, or email fabio@momentz.ventures.
+
+
+## FAQ
+Standalone page (real path): https://www.momentz.ventures/momentz-faq.html
+Homepage accordion (anchor): https://www.momentz.ventures/#faq
+Note: the standalone FAQ page currently sets its canonical URL to https://www.momentz.ventures/faq, which is not published (404). Use /momentz-faq.html.
+
+The answers below are the public facts Momentz confirms in its knowledge base. Questions whose exact public wording is still marked for confirmation (investment policy; the detailed engagement process) are omitted here.
+
+What is Momentz?
+A Milan-based hybrid holding company and venture studio: a growth and venture architecture firm combining strategy, execution and investment.
+
+How is Momentz different from a consultancy, a VC or an agency?
+It combines all three. It advises like a consultancy, executes like an agency, and can invest or take aligned upside like a venture partner — led by operators, not analysts.
+
+Who does Momentz work with?
+Scale-ups, mid-size companies expanding internationally, and early-stage founders.
+
+What are the three pillars?
+Expansion Architecture, Growth Execution, Venture Catalyst.
+
+Where does Momentz operate?
+Based in Milan, Italy; focus on Italy/Europe with international expansion mandates.
+
+How do I get in touch?
+Via the contact form at https://www.momentz.ventures/#contact, or fabio@momentz.ventures.
+
+
+## Files for language models
+
+- https://www.momentz.ventures/llms.txt — index of the site in the llms.txt format
+- https://www.momentz.ventures/llms-full.txt — this file

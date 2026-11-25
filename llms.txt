@@ -1,0 +1,29 @@
+# Momentz
+
+> Momentz is a Milan-based hybrid holding company and venture studio — a growth and venture architecture firm that combines strategy, execution and investment.
+
+Momentz helps companies expand and helps founders build. It sits between categories: consultancies advise but don't build; VCs fund but don't operate; agencies execute but don't own the upside. Momentz does all three through one operator-led structure, and also builds its own ventures.
+
+Official tagline: Growth & Venture Architecture.
+
+Based in Milan, Italy, with a focus on Italy/Europe and international expansion mandates. Contact is via the form on the website, or fabio@momentz.ventures.
+
+The canonical site is https://www.momentz.ventures/. https://momentz.ventures/ redirects there. The public site is a single-page homepage plus a standalone FAQ page. Most section links below are homepage anchors, not separate URLs; those are flagged.
+
+## Site pages
+
+- [Home](https://www.momentz.ventures/): Growth & Venture Architecture. Momentz identifies, structures and activates the moments that turn ambition into scalable growth.
+- [Manifesto](https://www.momentz.ventures/#manifesto): Official manifesto. Anchor on the homepage — not a standalone URL.
+- [Pillars](https://www.momentz.ventures/#pillars): The three pillars of the Momentz model. Anchor on the homepage — not a standalone URL.
+- [Expansion Architecture](https://www.momentz.ventures/#pillars): Designing how a company enters and scales in new markets (international expansion, market entry structure, positioning, go-to-market blueprint). For scale-ups and mid-size companies expanding internationally. Subsection of Pillars; same homepage anchor, not a standalone URL.
+- [Growth Execution](https://www.momentz.ventures/#pillars): Hands-on delivery of growth once the architecture is set (acquisition, partnerships, media/advertising, commercial operations). Momentz operates alongside the team rather than handing over a deck. For scale-ups and mid-size companies. Subsection of Pillars; same homepage anchor, not a standalone URL.
+- [Venture Catalyst](https://www.momentz.ventures/#pillars): Support for early-stage founders: shaping the venture, business model, positioning, funding path and early traction. Can extend into venture-partner style involvement. Subsection of Pillars; same homepage anchor, not a standalone URL.
+- [Model](https://www.momentz.ventures/#diff): How Momentz differs from a consultancy, a VC or an agency — strategy, hands-on execution and selective capital in one operator-led structure. Anchor on the homepage (`#diff`). The navigation label is “Model”; there is no /model page.
+- [Contact](https://www.momentz.ventures/#contact): Contact form and email (fabio@momentz.ventures). Anchor on the homepage — not a standalone URL.
+- [FAQ](https://www.momentz.ventures/momentz-faq.html): Standalone FAQ page (real path). A shorter FAQ also appears on the homepage at https://www.momentz.ventures/#faq. Note: the FAQ page's canonical tag currently points to https://www.momentz.ventures/faq, which is not published (404).
+
+## Optional
+
+- [Full text for LLMs](https://www.momentz.ventures/llms-full.txt): Complete plain-text version of the public site, for models that want the full copy in one file.
+- [Ventures](https://www.momentz.ventures/#ventures): Ventures Momentz is building. Anchor on the homepage — not a standalone URL.
+- [Homepage FAQ](https://www.momentz.ventures/#faq): FAQ accordion on the homepage. Prefer the standalone FAQ page above when citing a URL.
